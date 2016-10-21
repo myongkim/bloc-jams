@@ -64,14 +64,14 @@
          albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
      }
  };
-// below may need to be deleted. 
+// below may need to be deleted. assignment 13 function revised. 
 var findParentByClassName = function(element, targetClass) {
     if (element) {
         var currentParent = element.parentElement;
         while (currentParent.className != targetClass && currentParent.className !== null) {
             currentParent = currentParent.parentElement;
         }
-        return currentParent;
+        return alert("No parent found with that class name");
     }
 };
 
