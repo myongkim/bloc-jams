@@ -9,28 +9,28 @@
  
      var $row = $(template);
      
-     var clickHandler = function() {
-     var songNumber = parseInt($(this).attr('data-song-number'));
-     var songNumber = $(this).attr('data-song-number');
+  var clickHandler = function() {
+        var songNumber = parseInt($(this).attr('data-song-number'));
+        var songNumber = $(this).attr('data-song-number'); //would two songNumber variable will conflict the program?
 
-	 if (currentlyPlayingSongNumber !== null) {
+	    if (currentlyPlayingSongNumber !== null) {
 		// Revert to song number for currently playing song because user started playing new song.
 		var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
 		currentlyPlayingCell.html(currentlyPlayingSongNumber);
-	}
-	if (currentlyPlayingSongNumber !== songNumber) {
+	   }
+	    if (currentlyPlayingSongNumber !== songNumber) {
 		// Switch from Play -> Pause button to indicate new song is playing.
 		$(this).html(pauseButtonTemplate);
 		currentlyPlayingSongNumber = songNumber;
         currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
         updatePlayerBarSong();
-	} else if (currentlyPlayingSongNumber === songNumber) {
+	   } else if (currentlyPlayingSongNumber === songNumber) {
 		// Switch from Pause -> Play button to pause currently playing song.
 		$(this).html(playButtonTemplate);
         $('.main-controls .play-pause').html(playerBarPlayButton);
 		currentlyPlayingSongNumber = null;
         currentSongFromAlbum = null;
-	}
+	   }
          
          // clickHandler logic
     };
@@ -48,15 +48,14 @@
      
      var offHover = function(event) {
         // console.log may need to place in other place. I am not sure where to put it. 
-         console.log("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
+         
         var songNumberCell = $(this).find('.song-item-number');
         var songNumber = songNumberCell.attr('data-song-number');
         
         if (songNumber !== currentlyPlayingSongNumber) {
-            songNumberCell.html(songNumber);
-            
-            
+            songNumberCell.html(songNumber);    
         }
+        console.log("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
      };
  
      $row.find('.song-item-number').click(clickHandler);
