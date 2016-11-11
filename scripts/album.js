@@ -26,25 +26,35 @@ var createSongRow = function(songNumber, songName, songLength) {
      var clickHandler = function() {
          var songNumber = parseInt($(this).attr('data-song-number'));
          
-
-        if (currentlyPlayingSongNumber !== null) {
-            // Revert to song number for currently playing song because user started playing new song.
-            var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
-            currentlyPlayingCell.html(currentlyPlayingSongNumber);
-        }
-        if (currentlyPlayingSongNumber !== songNumber) {
-            // Switch from Play -> Pause button to indicate new song is playing.
+         if (currentlyPlayingSongNumber === null) {
             $(this).html(pauseButtonTemplate);
             setSong(songNumber);
             updatePlayerBarSong();
-        } else if (currentlyPlayingSongNumber === songNumber) {
-            // Switch from Pause -> Play button to pause currently playing song.
-            $(this).html(playButtonTemplate);
-            $('.main-controls .play-pause').html(playerBarPlayButton);
-            setSong(null);
-        }
-
-             // clickHandler logic
+         } else {
+            if (currentlyPlayingSongNumber === songNumber) {
+                // Revert to song number for currently playing song because user started playing new song.
+                $(this).html(playButtonTemplate);
+                setSong(songNumber);
+                updatePlayerBarSong();
+            } else if (currentlyPlayingSongNumber !== songNumber) {
+                // Switch from Play -> Pause button to indicate new song is playing.
+                // 1. Switch currentlyPlayingSongNumber HTML element to number
+                currentCell = getSongNumberCell(currentlyPlayingSongNumber);
+                currentCell.html(currentlyPlayingSongNumber);
+                
+                // 2. Set current row to play button template
+                $(this).html(pauseButtonTemplate);
+                setSong(songNumber);
+                updatePlayerBarSong();
+            }
+         }
+         
+//        else if (currentlyPlayingSongNumber === songNumber) {
+//            // Switch from Pause -> Play button to pause currently playing song.
+//            $(this).html(playButtonTemplate);
+//            $('.main-controls .play-pause').html(playerBarPlayButton);
+//            setSong(null);
+//        }
     };
  
       
@@ -52,21 +62,30 @@ var createSongRow = function(songNumber, songName, songLength) {
         var songNumberCell = $(this).find('.song-item-number');
         var songNumber = songNumberCell.attr('data-song-number');
          
-        if (songNumber !== currentlyPlayingSongNumber) {
-            songNumberCell.html(playButtonTemplate);
+        if (currentlyPlayingSongNumber === null) {
+                songNumberCell.html(playButtonTemplate);
+        } else {
+            if (songNumber !== currentlyPlayingSongNumber) {
+                songNumberCell.html(pauseButtonTemplate);
+            } else {
+                songNumberCell.html(playButtonTemplate);
+            }
         }
-         
      };
      
      var offHover = function(event) {
-         
-        var songNumberCell = $(this).find('.song-item-number');
-        var songNumber = songNumberCell.attr('data-song-number');
-        
-        if (songNumber !== currentlyPlayingSongNumber) {
-            songNumberCell.html(songNumber);    
-        }
-        console.log("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
+         var songNumberCell = $(this).find('.song-item-number');
+         var songNumber = songNumberCell.attr('data-song-number');
+
+         if (currentlyPlayingSongNumber === null) {
+            songNumberCell.html(songNumber);
+         } else {
+             if (songNumber === currentlyPlayingSongNumber) {
+                 songNumberCell.html(pauseButtonTemplate);
+             } else {
+                 songNumberCell.html(songNumber);
+             }
+         }
      };
  
      $row.find('.song-item-number').click(clickHandler);
